@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -59,7 +59,7 @@ app.listen(PORT, () => {
 
 // Connect to MongoDB
 mongoose
-    .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ai-prompt-api')
+    .connect("mongodb+srv://helpgoldstone_db_user:LBjKUqnNzsY9Hu4c@cluster0.h5tws0e.mongodb.net/?appName=Cluster0")
     .then(() => {
         console.log('✅ Connected to MongoDB');
     })
