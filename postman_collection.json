@@ -1,0 +1,1246 @@
+{
+	"info": {
+		"_postman_id": "ai-prompt-api-collection",
+		"name": "AI Prompt API",
+		"description": "Complete API collection for AI Prompt Image Generator API with automatic token management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Create Anonymous Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.token) {",
+									"        pm.environment.set('anon_token', response.data.token);",
+									"        pm.environment.set('anon_tokenId', response.data.tokenId);",
+									"        console.log('Anonymous token saved:', response.data.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/anonymous",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"anonymous"
+							]
+						},
+						"description": "Create a new anonymous user token. The token will be automatically saved to environment variable 'anon_token'."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.token) {",
+									"        pm.environment.set('admin_token', response.data.token);",
+									"        pm.environment.set('admin_id', response.data.admin._id);",
+									"        pm.environment.set('admin_username', response.data.admin.username);",
+									"        pm.environment.set('admin_role', response.data.admin.role);",
+									"        console.log('Admin token saved:', response.data.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"vishrut\",\n    \"password\": \"2140\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						},
+						"description": "Login as admin. The token will be automatically saved to environment variable 'admin_token'."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for anonymous users and admins"
+		},
+		{
+			"name": "Public Endpoints",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Prompts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/prompts?page=1&limit=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"prompts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "category",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Prompt Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/prompts/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"prompts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/images/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"images",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Endpoints (Anonymous)",
+			"item": [
+				{
+					"name": "Generate Prompt",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh anonymous token if not set",
+									"if (!pm.environment.get('anon_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/auth/anonymous',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: { mode: 'raw', raw: '{}' }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('anon_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{anon_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"promptText\": \"A beautiful sunset over mountains\",\n    \"categoryId\": \"\",\n    \"count\": 1,\n    \"size\": \"1024x1024\",\n    \"imageIds\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/prompts/generate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"prompts",
+								"generate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Favorites",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh anonymous token if not set",
+									"if (!pm.environment.get('anon_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/auth/anonymous',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: { mode: 'raw', raw: '{}' }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('anon_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{anon_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user/favorites",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"favorites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Favorites",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh anonymous token if not set",
+									"if (!pm.environment.get('anon_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/auth/anonymous',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: { mode: 'raw', raw: '{}' }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('anon_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{anon_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"promptId\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user/favorites/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"favorites",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove from Favorites",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh anonymous token if not set",
+									"if (!pm.environment.get('anon_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/auth/anonymous',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: { mode: 'raw', raw: '{}' }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('anon_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{anon_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"promptId\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user/favorites/remove",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"favorites",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Image Upload (Admin)",
+			"item": [
+				{
+					"name": "Upload Single Image",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data._id) {",
+									"        pm.environment.set('last_image_id', response.data._id);",
+									"        console.log('Image ID saved:', response.data._id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/images/upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"images",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Multiple Images",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/images/upload-multiple",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"images",
+								"upload-multiple"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Image",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/images/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"images",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{last_image_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Endpoints",
+			"item": [
+				{
+					"name": "Get Admin Statistics",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Prompts (Admin)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/prompts?page=1&limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"prompts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "category",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Prompt (Admin)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"promptText\": \"A beautiful sunset over mountains\",\n    \"categoryId\": \"\",\n    \"status\": \"done\",\n    \"imageUrls\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/prompts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"prompts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Prompt (Admin)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/prompts/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"prompts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category (Admin)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nature\",\n    \"description\": \"Nature-related prompts\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category (Admin)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nature & Landscape\",\n    \"description\": \"Updated description\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category (Admin)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Admin (Super Admin Only)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newadmin\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Admins (Super Admin Only)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-refresh admin token if not set",
+									"if (!pm.environment.get('admin_token')) {",
+									"    pm.sendRequest({",
+									"        url: pm.environment.get('base_url') + '/api/admin/login',",
+									"        method: 'POST',",
+									"        header: { 'Content-Type': 'application/json' },",
+									"        body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ username: 'vishrut', password: '2140' })",
+									"        }",
+									"    }, function (err, res) {",
+									"        if (!err && res.json().success) {",
+									"            pm.environment.set('admin_token', res.json().data.token);",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global pre-request script",
+					"// This runs before every request",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global test script",
+					"// This runs after every request",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}
+
