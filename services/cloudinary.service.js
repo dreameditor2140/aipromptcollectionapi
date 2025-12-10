@@ -3,9 +3,9 @@ const { Readable } = require('stream');
 
 // Configure Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  cloud_name: "dgy3pfvdr",
+  api_key: "694244286834961",
+  api_secret: "Mz8mFlrJEv-xQBt1BQsM7mdq2yM"
 });
 
 /**
@@ -33,7 +33,7 @@ const uploadImage = async (imageData, folder = 'ai-prompts') => {
             else resolve(result);
           }
         );
-        
+
         Readable.from(imageData).pipe(uploadStream);
       });
     }
